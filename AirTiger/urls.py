@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from rest_framework import routers
 from django.urls import path
+
 # JWT
 
 
@@ -26,12 +27,12 @@ urlpatterns = [
 # router
 from apps.user.router import router as user_router
 from apps.rbac.router import router as rbac_router
-
+from apps.cmdb.router import router as cmdb_router
 
 router = routers.DefaultRouter()
 router.registry.extend(user_router.registry)
 router.registry.extend(rbac_router.registry)
-
+router.registry.extend(cmdb_router.registry)
 
 urlpatterns += [
     path('api/', include(router.urls)),
@@ -45,5 +46,3 @@ urlpatterns += [
     path('api/', include(user_url)),
 
 ]
-
-

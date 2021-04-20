@@ -130,7 +130,7 @@ TIME_ZONE = 'Asia/Shanghai'
 
 # TIME_ZONE = 'UTC'
 # TIME_ZONE = "Asia/Shanghai"
-
+APPEND_SLASH=False
 USE_I18N = True
 
 USE_L10N = True

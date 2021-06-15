@@ -14,9 +14,10 @@ def get_class(type):
 
 
 def get_instance(field, type, **option):
+    # print(field, type, option)
     key = ",".join(f"{k}={v}" for k, v in sorted(option.items()))
     key = f"{type}|{key}"
-
+    print(key)
     obj = instances_cache.get(key)
     if obj:
         return obj
@@ -45,8 +46,10 @@ class BaseType:
     def stringify(self, value):
         raise NotImplementedError()
 
-    def destringify(self, value):
-        raise NotImplementedError()
+    def prefix_func(self, prefix, val, value):
+        if not str(val).startswith(prefix):
+            raise ValueError(f'field {self.field} is {value} not startswith {prefix}')
+        return str(ipaddress.ip_address(value))
 
 
 class Int(BaseType):
@@ -68,9 +71,14 @@ class IP(BaseType):
     def stringify(self, value):
         val = value
         prefix = self.prefix
-        if prefix and not str(val).startswith(prefix):
-            raise ValueError(f'field {self.field} is {value} not startswith {prefix}')
-        return str(ipaddress.ip_address(value))
+        if val:
+            if self.prefix:
+                self.prefix(self.prefix())
+            if \
+                    prefix and not str(val).startswith(prefix):
+                raise ValueError(f'field {self.field} is {value} not startswith {prefix}')
+            return str(ipaddress.ip_address(value))
+        return val
 
     def destringify(self, value):
         return value
@@ -78,6 +86,7 @@ class IP(BaseType):
 
 class Str(BaseType):
     def stringify(self, value):
+        print(self.__dict__)
         len_num = self.length
         if len_num and len(value) > len_num:
             raise ValueError(f'field {self.field} is {value} Out of length limit, should be less than  {len_num}')
@@ -89,7 +98,7 @@ class Str(BaseType):
 
 class Choice(BaseType):
     def stringify(self, value):
-        if len(self.choises) < value:
+        if len(self.choice) < value:
             raise ValueError(f'field {self.field} Choice value:({value}) Out of maximum index')
         return value
 

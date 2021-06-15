@@ -40,8 +40,11 @@ urlpatterns += [
 
 # apps urls
 from apps.user import urls as user_url
+from django.conf import settings
+from django.views.static import serve
 
 urlpatterns += [
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
     path('api/', include(router.urls)),
     path('api/', include(user_url)),
 

@@ -114,7 +114,6 @@ class LoginViewSet(APIView):
                     'roles': [role.title for role in user_obj.roles.all()]
                 }
                 token = create_token({'permission': permission_list, 'user_info': user_info})
-                print(token)
                 return json_ok_response(data=token)
             return json_error_response(message='用户名或密码错误,请重试!', )
         return json_error_response(message='email和password为必传参数!', )

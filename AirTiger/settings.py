@@ -130,7 +130,7 @@ TIME_ZONE = 'Asia/Shanghai'
 
 # TIME_ZONE = 'UTC'
 # TIME_ZONE = "Asia/Shanghai"
-APPEND_SLASH=False
+APPEND_SLASH = False
 USE_I18N = True
 
 USE_L10N = True
@@ -145,3 +145,27 @@ AUTH_USER_MODEL = 'user.UserProfile'
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+REST_FRAMEWORK = {
+    # 'DEFAULT_AUTHENTICATION_CLASSES': ('apps.rbac.auth.auth.JwtQueryParamsAuthentication', ),
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.AutoSchema',
+    'DEFAULT_PAGINATION_CLASS': 'base.base_pagination.NewPagination',
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',
+                                'rest_framework.filters.SearchFilter',
+                                'rest_framework.filters.OrderingFilter',),
+    'DATETIME_FORMAT': "%Y-%m-%d %H:%M:%S",
+}
+JWT_TIMEOUT = 60 * 24  # 单位分钟
+
+VALID_URL_LIST = [
+    '/admin/',
+    '/api/user/login',
+    '/api/user/logout',
+    '/docs/',
+    '/api/user/user-profile/',
+    '/api/user/logout/',
+    '/api/cmdb-api/client-asset.store'
+]
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'upload')  # 注意此处不要写成列表或元组的形式
+# 配置 MEDIA_URL 作为公用 URL，指向上传文件的基本路径
+MEDIA_URL = '/media/'
